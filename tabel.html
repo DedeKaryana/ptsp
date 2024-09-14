@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital PTSP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .header img {
+            width: 100px;
+            border-radius: 50%;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 0;
+        }
+
+        .header h2 {
+            margin-top: 0;
+            font-size: 1.2em;
+            color: gray;
+        }
+
+        .marquee-container {
+            background-color: rgb(104, 231, 207);
+            padding: 10px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            width: 95%;
+            margin: 20px auto;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            color: white;
+        }
+
+        .btn-success {
+            background-color: green;
+        }
+
+        .btn-danger {
+            background-color: red;
+        }
+
+        .btn-info {
+            background-color: blue;
+        }
+
+        .btn-warning {
+            background-color: orange;
+        }
+
+        .btn-purple {
+            background-color: purple;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        table th {
+            background-color: #d3ffce;
+        }
+
+        table td button {
+            padding: 5px 10px;
+            margin: 5px;
+        }
+
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .pagination button {
+            padding: 10px;
+            margin: 5px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            width: 40%;
+        }
+
+        .modal input, .modal select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .modal .btn-close {
+            float: right;
+            background-color: red;
+            color: white;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <img src="xx.png" alt="Logo">
+        <h1>Digital Layanan PTSP</h1>
+        <h2>Xhhhhhhhhhhh Geeeeeee Baaaaaaaaaa</h2>
+    </div>
+
+    <!-- Teks Berjalan -->
+    <div class="marquee-container">
+        <marquee>Selamat datang di layanan digital PTSP!</marquee>
+    </div>
+    
+    <!-- Buttons -->
+    <div class="container">
+        <button class="btn btn-success">Kirim Ke Excel</button>
+        <button class="btn btn-purple" id="btnTambahData">Tambah Data</button>
+        <button class="btn btn-purple" id="btnCetakPDF">Cetak PDF</button>
+    </div>
+
+    <!-- Table -->
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nomor Tiket</th>
+                    <th>Nama Pelanggan</th>
+                    <th>NIK</th>
+                    <th>Jenis Layanan</th>
+                    <th>Unit Kerja</th>
+                    <th>Lampiran Persyaratan</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="dataTable">
+                <!-- Data akan ditambahkan di sini -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        <button>Previous</button>
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>Next</button>
+    </div>
+
+    <!-- Modal Tambah Data -->
+    <div id="tambahDataModal" class="modal">
+        <div class="modal-content">
+            <span class="btn-close" id="closeModal">X</span>
+            <h2>Tambah Data Layanan</h2>
+            <form id="tambahDataForm">
+                <label for="namaPelanggan">Nama Pelanggan</label>
+                <input type="text" id="namaPelanggan" placeholder="Masukkan Nama Pelanggan">
+                
+                <label for="nik">NIK</label>
+                <input type="text" id="nik" placeholder="Masukkan NIK">
+
+                <label for="jenisLayanan">Jenis Layanan</label>
+                <select id="jenisLayanan">
+                    <option value="Layanan A">Layanan A</option>
+                    <option value="Layanan B">Layanan B</option>
+                    <option value="Layanan C">Layanan C</option>
+                </select>
+
+                <label for="unitKerja">Unit Kerja</label>
+                <select id="unitKerja">
+                    <option value="Sub Bagian Tata Usaha">Sub Bagian Tata Usaha</option>
+                    <option value="Seksi Penmad">Seksi Penmad</option>
+                    <option value="Seksi PHU">Seksi PHU</option>
+                    <option value="Seksi BIMAS Islam">Seksi BIMAS Islam</option>
+                </select>
+
+                <!-- Tambahkan input file untuk unggahan dokumen -->
+                <label for="lampiran">Lampiran Persyaratan</label>
+                <input type="file" id="lampiran" accept=".pdf">
+
+                <button type="button" class="btn btn-purple" id="simpanDataButton">Simpan Data</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Edit Data -->
+    <div id="editDataModal" class="modal">
+        <div class="modal-content">
+            <span class="btn-close" id="closeEditModal">X</span>
+            <h2>Edit Data Layanan</h2>
+            <form id="editDataForm">
+                <input type="hidden" id="editIndex">
+                <label for="editNamaPelanggan">Nama Pelanggan</label>
+                <input type="text" id="editNamaPelanggan">
+                
+                <label for="editNik">NIK</label>
+                <input type="text" id="editNik">
+
+                <label for="editJenisLayanan">Jenis Layanan</label>
+                <select id="editJenisLayanan">
+                    <option value="Layanan A">Layanan A</option>
+                    <option value="Layanan B">Layanan B</option>
+                    <option value="Layanan C">Layanan C</option>
+                </select>
+
+                <label for="editUnitKerja">Unit Kerja</label>
+                <select id="editUnitKerja">
+                    <option value="Sub Bagian Tata Usaha">Sub Bagian Tata Usaha</option>
+                    <option value="Seksi Penmad">Seksi Penmad</option>
+                    <option value="Seksi PHU">Seksi PHU</option>
+                    <option value="Seksi BIMAS Islam">Seksi BIMAS Islam</option>
+                </select>
+
+                <label for="editLampiran">Lampiran Persyaratan</label>
+                <input type="file" id="editLampiran" accept=".pdf">
+
+                <button type="button" class="btn btn-purple" id="simpanEditDataButton">Simpan Perubahan</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal untuk Status -->
+    <div id="statusModal" class="modal">
+        <div class="modal-content">
+            <span class="btn-close" id="closeStatusModal">X</span>
+            <h2>Ubah Status</h2>
+            <form id="statusForm">
+                <input type="hidden" id="statusIndex"> <!-- Index data untuk mengidentifikasi baris yang diperbarui -->
+                <label for="status">Status</label>
+                <select id="status">
+                    <option value="Memenuhi Syarat">Memenuhi Syarat</option>
+                    <option value="Menunggu">Menunggu</option>
+                    <option value="Perbaikan">Perbaikan</option>
+                </select>
+                <button type="button" class="btn btn-purple" id="simpanStatusButton">Simpan Status</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        const { jsPDF } = window.jspdf;
+
+        let dataLayanan = [];
+        let noCounter = 1;
+        let editIndex = null; // Untuk menyimpan index data yang sedang diedit
+
+        // Buka Modal Tambah Data
+        document.getElementById('btnTambahData').addEventListener('click', function() {
+            document.getElementById('tambahDataModal').style.display = 'flex';
+        });
+
+        // Tutup Modal Tambah Data
+        document.getElementById('closeModal').addEventListener('click', function() {
+            document.getElementById('tambahDataModal').style.display = 'none';
+        });
+
+        // Simpan Data
+        document.getElementById('simpanDataButton').addEventListener('click', function() {
+            const namaPelanggan = document.getElementById('namaPelanggan').value;
+            const nik = document.getElementById('nik').value;
+            const jenisLayanan = document.getElementById('jenisLayanan').value;
+            const unitKerja = document.getElementById('unitKerja').value;
+            const lampiran = document.getElementById('lampiran').files[0]; // Ambil file dari input
+
+            if (namaPelanggan === "" || nik === "" || jenisLayanan === "" || unitKerja === "") {
+                alert("Semua kolom harus diisi!");
+            } else {
+                const newData = {
+                    no: noCounter++,
+                    nomorTiket: "TIKET-" + Math.floor(Math.random() * 10000),
+                    namaPelanggan: namaPelanggan,
+                    nik: nik,
+                    jenisLayanan: jenisLayanan,
+                    unitKerja: unitKerja,
+                    persyaratan: lampiran ? lampiran.name : "Tidak ada lampiran", // Tampilkan nama file
+                    status: 'Menunggu'
+                };
+
+                dataLayanan.push(newData);
+                tambahDataKeTabel(newData);
+
+                // Reset form dan tutup modal
+                document.getElementById('tambahDataForm').reset();
+                document.getElementById('tambahDataModal').style.display = 'none';
+            }
+        });
+
+        // Buka Modal Edit Data
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('btn-warning')) {
+                const row = event.target.closest('tr');
+                editIndex = Array.from(row.parentNode.children).indexOf(row); // Dapatkan index baris
+
+                // Ambil data dari baris
+                const data = dataLayanan[editIndex];
+                document.getElementById('editIndex').value = editIndex;
+                document.getElementById('editNamaPelanggan').value = data.namaPelanggan;
+                document.getElementById('editNik').value = data.nik;
+                document.getElementById('editJenisLayanan').value = data.jenisLayanan;
+                document.getElementById('editUnitKerja').value = data.unitKerja;
+                document.getElementById('editLampiran').value = ''; // Reset file input
+
+                document.getElementById('editDataModal').style.display = 'flex';
+            }
+        });
+
+        // Simpan Perubahan Data
+        document.getElementById('simpanEditDataButton').addEventListener('click', function() {
+            const index = document.getElementById('editIndex').value;
+            const namaPelanggan = document.getElementById('editNamaPelanggan').value;
+            const nik = document.getElementById('editNik').value;
+            const jenisLayanan = document.getElementById('editJenisLayanan').value;
+            const unitKerja = document.getElementById('editUnitKerja').value;
+            const lampiran = document.getElementById('editLampiran').files[0]; // Ambil file dari input
+
+            if (namaPelanggan === "" || nik === "" || jenisLayanan === "" || unitKerja === "") {
+                alert("Semua kolom harus diisi!");
+            } else {
+                dataLayanan[index] = {
+                    ...dataLayanan[index],
+                    namaPelanggan,
+                    nik,
+                    jenisLayanan,
+                    unitKerja,
+                    persyaratan: lampiran ? lampiran.name : dataLayanan[index].persyaratan // Update nama file jika ada
+                };
+
+                updateTable(); // Perbarui tabel untuk menampilkan data yang baru
+
+                // Tutup modal
+                document.getElementById('editDataModal').style.display = 'none';
+            }
+        });
+
+        // Buka Modal Status
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('btn-info')) {
+                const row = event.target.closest('tr');
+                editIndex = Array.from(row.parentNode.children).indexOf(row); // Dapatkan index baris
+                const status = row.children[7].textContent.trim(); // Dapatkan status saat ini
+
+                document.getElementById('status').value = status; // Set nilai select
+                document.getElementById('statusModal').style.display = 'flex';
+            }
+
+            if (event.target.classList.contains('btn-danger')) {
+                const row = event.target.closest('tr');
+                const index = Array.from(row.parentNode.children).indexOf(row); // Dapatkan index baris
+
+                if (confirm("Anda yakin ingin menghapus data ini?")) {
+                    dataLayanan.splice(index, 1); // Hapus data dari array
+                    updateTable(); // Perbarui tabel untuk menampilkan data yang baru
+                }
+            }
+        });
+
+        // Tutup Modal Status
+        document.getElementById('closeStatusModal').addEventListener('click', function() {
+            document.getElementById('statusModal').style.display = 'none';
+        });
+
+        // Simpan Status
+        document.getElementById('simpanStatusButton').addEventListener('click', function() {
+            const status = document.getElementById('status').value;
+
+            if (editIndex !== null) {
+                dataLayanan[editIndex].status = status; // Perbarui status di array dataLayanan
+                updateTable(); // Perbarui tabel untuk menampilkan status yang baru
+
+                // Tutup modal status
+                document.getElementById('statusModal').style.display = 'none';
+            }
+        });
+
+        // Fungsi untuk menambahkan data ke tabel
+        function tambahDataKeTabel(data) {
+            const tbody = document.getElementById('dataTable');
+            const tr = document.createElement('tr');
+
+            tr.innerHTML = `
+                <td>${data.no}</td>
+                <td>${data.nomorTiket}</td>
+                <td>${data.namaPelanggan}</td>
+                <td>${data.nik}</td>
+                <td>${data.jenisLayanan}</td>
+                <td>${data.unitKerja}</td>
+                <td><button class="btn btn-success">${data.persyaratan}</button></td>
+                <td>${data.status}</td>
+                <td>
+                    <button class="btn btn-info">Lihat</button>
+                    <button class="btn btn-warning">Ubah</button>
+                    <button class="btn btn-danger">Hapus</button>
+                    <button class="btn btn-purple" onclick="cetakPDF(${data.no})">Cetak PDF</button>
+                </td>
+            `;
+
+            tbody.appendChild(tr);
+        }
+
+        // Fungsi untuk memperbarui tabel
+        function updateTable() {
+            const tbody = document.getElementById('dataTable');
+            tbody.innerHTML = ''; // Kosongkan tabel
+
+            dataLayanan.forEach(item => {
+                tambahDataKeTabel(item); // Tambahkan kembali data ke tabel
+            });
+        }
+
+        // Fungsi untuk mencetak ke PDF
+        function cetakPDF(no) {
+            const doc = new jsPDF();
+            const data = dataLayanan.find(d => d.no === no);
+
+            doc.setFontSize(12);
+            doc.text('Detail Layanan PTSP', 10, 10);
+            doc.text(`No: ${data.no}`, 10, 20);
+            doc.text(`Nomor Tiket: ${data.nomorTiket}`, 10, 30);
+            doc.text(`Nama Pelanggan: ${data.namaPelanggan}`, 10, 40);
+            doc.text(`NIK: ${data.nik}`, 10, 50);
+            doc.text(`Jenis Layanan: ${data.jenisLayanan}`, 10, 60);
+            doc.text(`Unit Kerja: ${data.unitKerja}`, 10, 70);
+            doc.text(`Lampiran: ${data.persyaratan}`, 10, 80);
+            doc.text(`Status: ${data.status}`, 10, 90);
+
+            doc.save(`Detail-Layanan-${data.no}.pdf`);
+        }
+    </script>
+</body>
+</html>
